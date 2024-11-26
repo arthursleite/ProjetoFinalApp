@@ -1,7 +1,7 @@
 import React, { createContext, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const EscalacaoContext = createContext({});
+export const LineupContext = createContext({});
 
 function LineupProvider({ children }) {
   const [lineup, setLineup] = useState([]);
