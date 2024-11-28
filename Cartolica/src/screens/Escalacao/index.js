@@ -216,8 +216,6 @@ export default function Escalacao({ navigation }) {
                         removerJogadorDaEscalacao(meioCampistas[2].id);
                       }}
                     >
-                      {/* <View>
-                      </View> */}
                       <Image
                         style={{ width: 55, height: 55 }}
                         source={{

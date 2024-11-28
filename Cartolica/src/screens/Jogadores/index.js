@@ -108,7 +108,6 @@ export default function Jogadores({ route }) {
     <View style={{ flex: 1 }}>
       <View style={styles.containerNomePosicao}>
         {getNomePosicao()}
-        {/* <Text style={styles.textPosicao}>{getNomePosicao}</Text> */}
         <View
           style={{
             marginTop: 15,
