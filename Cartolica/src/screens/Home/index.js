@@ -37,7 +37,7 @@ export default function Main({ navigation }) {
         <TouchableOpacity
           style={styles.buttonLineup}
           onPress={() => {
-            navigation.navigate("Lineup");
+            navigation.navigate("Escalacao");
           }}
         >
           <Text style={styles.textButtonLineup}>Escalar</Text>

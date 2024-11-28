@@ -4,9 +4,9 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "./src/screens/Home";
-import Footballers from "./src/screens/Footballers";
-import Lineup from "./src/screens/Lineup";
-import LineupProvider from "./src/contexts/lineup";
+import Escalacao from "./src/screens/Escalacao";
+import Jogadores from "./src/screens/Jogadores";
+import EscalacaoProvider from "./src/contexts/escalacao";
 import { Entypo, Feather, MaterialCommunityIcons } from "@expo/vector-icons";
 
 const Stack = createStackNavigator();
@@ -47,8 +47,8 @@ function Tabs() {
         }}
       />
       <Tab.Screen
-        name="Lineup"
-        component={Lineup}
+        name="Escalacao"
+        component={Escalacao}
         options={{
           title: "Escalação",
           tabBarIcon: ({ size, color }) => (
@@ -61,8 +61,8 @@ function Tabs() {
         }}
       />
       <Tab.Screen
-        name="Footballers"
-        component={Footballers}
+        name="Jogadores"
+        component={Jogadores}
         options={{
           title: "Jogadores",
           tabBarIcon: ({ size, color }) => (
@@ -77,7 +77,7 @@ function Tabs() {
 export default function App() {
   return (
     <NavigationContainer>
-      <LineupProvider>
+      <EscalacaoProvider>
         <Stack.Navigator
           screenOptions={{
             headerTitle: (props) => <LogoHeader {...props} />,
@@ -93,9 +93,9 @@ export default function App() {
           }}
         >
           <Stack.Screen name="Main" component={Tabs} />
-          <Stack.Screen name="Footballers" component={Footballers} />
+          <Stack.Screen name="Jogadores" component={Jogadores} />
         </Stack.Navigator>
-      </LineupProvider>
+      </EscalacaoProvider>
     </NavigationContainer>
   );
 }

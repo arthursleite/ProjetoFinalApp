@@ -1,15 +1,15 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-    containerPositionName: {
+    containerNomePosicao: {
         alignItems: "center",
         margin: 15,
     },
-    textPosition: {
+    textPosicao: {
         fontSize: 20,
         fontWeight: "bold",
     },
-    playerContainer: {
+    containerJogador: {
         backgroundColor: "#DCDCDC",
         padding: 30,
         marginBottom: 10,

@@ -3,47 +3,41 @@ import ViewShot from "react-native-view-shot";
 import * as Sharing from "expo-sharing";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import styles from "./style";
-import { LineupContext } from "../../contexts/lineup";
+import { EscalacaoContext } from "../../contexts/escalacao";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function Lineup({ navigation }) {
-  const {
-    lineup,
-    removePlayerToLineup,
-    removeAllPlayers,
-    handleAsyncStorage,
-    getData,
-  } = useContext(LineupContext);
+export default function Escalacao({ navigation }) {
+  const { escalacao, removerJogadorDaEscalacao, removerTodosOsJogadores, salvarEscalacao, carregarEscalacao } = useContext(EscalacaoContext);
 
-  function positionDefine(position) {
-    navigation.navigate("Footballers", {
-      position: position,
+  function definirPosicao(posicao) {
+    navigation.navigate("Jogadores", {
+      posicao: posicao,
     });
   }
 
   useEffect(() => {
-    getData();
+    carregarEscalacao();
   }, []);
 
   const viewShot = React.useRef();
 
-  captureAndShareScreenshot = () => {
+  printarECompartilhar = () => {
     viewShot.current.capture().then((uri) => {
       console.log("do something with ", uri);
       Sharing.shareAsync("file://" + uri);
     }),
       (error) =>
         alert(
-          "Oops, algo de errado aconteceu. Tente novamente mais tarde!",
+          "Ops, algo de errado aconteceu. Tente novamente mais tarde!",
           error
         );
   };
 
-  let goalkeeper = lineup.find((player) => player.position === "goalkeeper");
-  let sides = lineup.filter((player) => player.position === "side");
-  let defenders = lineup.filter((player) => player.position === "defender");
-  let forwards = lineup.filter((player) => player.position === "forward");
-  let midfielders = lineup.filter((player) => player.position === "midfielder");
+  let goleiro = escalacao.find((jogador) => jogador.posicao === "goleiro");
+  let laterais = escalacao.filter((jogador) => jogador.posicao === "lateral");
+  let zagueiros = escalacao.filter((jogador) => jogador.posicao === "zagueiro");
+  let meioCampistas = escalacao.filter((jogador) => jogador.posicao === "meio-campista");
+  let atacantes = escalacao.filter((jogador) => jogador.posicao === "atacante");
 
   return (
     <View style={styles.container}>
@@ -52,22 +46,22 @@ export default function Lineup({ navigation }) {
           <View style={styles.sideLinesContainer}>
             <View style={styles.forwardContainer}>
               <View style={styles.sectionContainer}>
-                {forwards.length > 0 ? (
+                {atacantes.length > 0 ? (
                   <View style={styles.footballer}>
                     <TouchableOpacity
                       style={styles.playerContainer}
                       onPress={() => {
-                        removePlayerToLineup(forwards[0].id);
+                        removerJogadorDaEscalacao(atacantes[0].id);
                       }}
                     >
                       <Image
                         style={{ width: 55, height: 55 }}
                         source={{
-                          uri: forwards[0].image,
+                          uri: atacantes[0].imagem,
                         }}
                       ></Image>
                       <Text style={styles.footballerName}>
-                        {forwards[0].name}
+                        {atacantes[0].nome}
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -76,29 +70,29 @@ export default function Lineup({ navigation }) {
                     <TouchableOpacity
                       style={styles.addButton}
                       onPress={() => {
-                        positionDefine("forward");
+                        definirPosicao("atacante");
                       }}
                     >
                       <Text style={styles.textAddButton}>+</Text>
                     </TouchableOpacity>
                   </View>
                 )}
-                {forwards.length > 1 ? (
+                {atacantes.length > 1 ? (
                   <View style={styles.footballer}>
                     <TouchableOpacity
                       style={styles.playerContainer}
                       onPress={() => {
-                        removePlayerToLineup(forwards[1].id);
+                        removerJogadorDaEscalacao(atacantes[1].id);
                       }}
                     >
                       <Image
                         style={{ width: 55, height: 55 }}
                         source={{
-                          uri: forwards[1].image,
+                          uri: atacantes[1].imagem,
                         }}
                       ></Image>
                       <Text style={styles.footballerName}>
-                        {forwards[1].name}
+                        {atacantes[1].nome}
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -107,7 +101,7 @@ export default function Lineup({ navigation }) {
                     <TouchableOpacity
                       style={styles.addButton}
                       onPress={() => {
-                        positionDefine("forward");
+                        definirPosicao("atacante");
                       }}
                     >
                       <Text style={styles.textAddButton}>+</Text>
@@ -115,22 +109,22 @@ export default function Lineup({ navigation }) {
                   </View>
                 )}
 
-                {forwards.length > 2 ? (
+                {atacantes.length > 2 ? (
                   <View style={styles.footballer}>
                     <TouchableOpacity
                       style={styles.playerContainer}
                       onPress={() => {
-                        removePlayerToLineup(forwards[2].id);
+                        removerJogadorDaEscalacao(atacantes[2].id);
                       }}
                     >
                       <Image
                         style={{ width: 55, height: 55 }}
                         source={{
-                          uri: forwards[2].image,
+                          uri: atacantes[2].imagem,
                         }}
                       ></Image>
                       <Text style={styles.footballerName}>
-                        {forwards[2].name}
+                        {atacantes[2].nome}
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -139,7 +133,7 @@ export default function Lineup({ navigation }) {
                     <TouchableOpacity
                       style={styles.addButton}
                       onPress={() => {
-                        positionDefine("forward");
+                        definirPosicao("atacante");
                       }}
                     >
                       <Text style={styles.textAddButton}>+</Text>
@@ -150,22 +144,22 @@ export default function Lineup({ navigation }) {
             </View>
             <View style={styles.midfielderContainer}>
               <View style={styles.sectionContainer}>
-                {midfielders.length > 0 ? (
+                {meioCampistas.length > 0 ? (
                   <View style={styles.footballer}>
                     <TouchableOpacity
                       style={styles.playerContainer}
                       onPress={() => {
-                        removePlayerToLineup(midfielders[0].id);
+                        removerJogadorDaEscalacao(meioCampistas[0].id);
                       }}
                     >
                       <Image
                         style={{ width: 55, height: 55 }}
                         source={{
-                          uri: midfielders[0].image,
+                          uri: meioCampistas[0].imagem,
                         }}
                       ></Image>
                       <Text style={styles.footballerName}>
-                        {midfielders[0].name}
+                        {meioCampistas[0].nome}
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -174,7 +168,7 @@ export default function Lineup({ navigation }) {
                     <TouchableOpacity
                       style={styles.addButton}
                       onPress={() => {
-                        positionDefine("midfielder");
+                        definirPosicao("meio-campista");
                       }}
                     >
                       <Text style={styles.textAddButton}>+</Text>
@@ -182,22 +176,22 @@ export default function Lineup({ navigation }) {
                   </View>
                 )}
 
-                {midfielders.length > 1 ? (
+                {meioCampistas.length > 1 ? (
                   <View style={styles.footballer}>
                     <TouchableOpacity
                       style={styles.playerContainer}
                       onPress={() => {
-                        removePlayerToLineup(midfielders[1].id);
+                        removerJogadorDaEscalacao(meioCampistas[1].id);
                       }}
                     >
                       <Image
                         style={{ width: 55, height: 55 }}
                         source={{
-                          uri: midfielders[1].image,
+                          uri: meioCampistas[1].imagem,
                         }}
                       ></Image>
                       <Text style={styles.footballerName}>
-                        {midfielders[1].name}
+                        {meioCampistas[1].nome}
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -206,7 +200,7 @@ export default function Lineup({ navigation }) {
                     <TouchableOpacity
                       style={styles.addButton}
                       onPress={() => {
-                        positionDefine("midfielder");
+                        definirPosicao("meio-campista");
                       }}
                     >
                       <Text style={styles.textAddButton}>+</Text>
@@ -214,12 +208,12 @@ export default function Lineup({ navigation }) {
                   </View>
                 )}
 
-                {midfielders.length > 2 ? (
+                {meioCampistas.length > 2 ? (
                   <View style={styles.footballer}>
                     <TouchableOpacity
                       style={styles.playerContainer}
                       onPress={() => {
-                        removePlayerToLineup(midfielders[2].id);
+                        removerJogadorDaEscalacao(meioCampistas[2].id);
                       }}
                     >
                       {/* <View>
@@ -227,11 +221,11 @@ export default function Lineup({ navigation }) {
                       <Image
                         style={{ width: 55, height: 55 }}
                         source={{
-                          uri: midfielders[2].image,
+                          uri: meioCampistas[2].imagem,
                         }}
                       ></Image>
                       <Text style={styles.footballerName}>
-                        {midfielders[2].name}
+                        {meioCampistas[2].nome}
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -240,7 +234,7 @@ export default function Lineup({ navigation }) {
                     <TouchableOpacity
                       style={styles.addButton}
                       onPress={() => {
-                        positionDefine("midfielder");
+                        definirPosicao("meio-campista");
                       }}
                     >
                       <Text style={styles.textAddButton}>+</Text>
@@ -251,21 +245,21 @@ export default function Lineup({ navigation }) {
             </View>
             <View style={styles.defenderContainer}>
               <View style={styles.sectionContainer}>
-                {sides.length > 0 ? (
+                {laterais.length > 0 ? (
                   <View style={styles.footballer}>
                     <TouchableOpacity
                       style={styles.playerContainer}
                       onPress={() => {
-                        removePlayerToLineup(sides[0].id);
+                        removerJogadorDaEscalacao(laterais[0].id);
                       }}
                     >
                       <Image
                         style={{ width: 55, height: 55 }}
                         source={{
-                          uri: sides[0].image,
+                          uri: laterais[0].imagem,
                         }}
                       ></Image>
-                      <Text style={styles.footballerName}>{sides[0].name}</Text>
+                      <Text style={styles.footballerName}>{laterais[0].nome}</Text>
                     </TouchableOpacity>
                   </View>
                 ) : (
@@ -273,7 +267,7 @@ export default function Lineup({ navigation }) {
                     <TouchableOpacity
                       style={styles.addButton}
                       onPress={() => {
-                        positionDefine("side");
+                        definirPosicao("lateral");
                       }}
                     >
                       <Text style={styles.textAddButton}>+</Text>
@@ -281,22 +275,22 @@ export default function Lineup({ navigation }) {
                   </View>
                 )}
 
-                {defenders.length > 0 ? (
+                {zagueiros.length > 0 ? (
                   <View style={styles.footballer}>
                     <TouchableOpacity
                       style={styles.playerContainer}
                       onPress={() => {
-                        removePlayerToLineup(defenders[0].id);
+                        removerJogadorDaEscalacao(zagueiros[0].id);
                       }}
                     >
                       <Image
                         style={{ width: 55, height: 55 }}
                         source={{
-                          uri: defenders[0].image,
+                          uri: zagueiros[0].imagem,
                         }}
                       ></Image>
                       <Text style={styles.footballerName}>
-                        {defenders[0].name}
+                        {zagueiros[0].nome}
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -305,7 +299,7 @@ export default function Lineup({ navigation }) {
                     <TouchableOpacity
                       style={styles.addButton}
                       onPress={() => {
-                        positionDefine("defender");
+                        definirPosicao("zagueiro");
                       }}
                     >
                       <Text style={styles.textAddButton}>+</Text>
@@ -313,22 +307,22 @@ export default function Lineup({ navigation }) {
                   </View>
                 )}
 
-                {defenders.length > 1 ? (
+                {zagueiros.length > 1 ? (
                   <View style={styles.footballer}>
                     <TouchableOpacity
                       style={styles.playerContainer}
                       onPress={() => {
-                        removePlayerToLineup(defenders[1].id);
+                        removerJogadorDaEscalacao(zagueiros[1].id);
                       }}
                     >
                       <Image
                         style={{ width: 55, height: 55 }}
                         source={{
-                          uri: defenders[1].image,
+                          uri: zagueiros[1].imagem,
                         }}
                       ></Image>
                       <Text style={styles.footballerName}>
-                        {defenders[1].name}
+                        {zagueiros[1].nome}
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -337,7 +331,7 @@ export default function Lineup({ navigation }) {
                     <TouchableOpacity
                       style={styles.addButton}
                       onPress={() => {
-                        positionDefine("defender");
+                        definirPosicao("zagueiro");
                       }}
                     >
                       <Text style={styles.textAddButton}>+</Text>
@@ -345,21 +339,21 @@ export default function Lineup({ navigation }) {
                   </View>
                 )}
 
-                {sides.length > 1 ? (
+                {laterais.length > 1 ? (
                   <View style={styles.footballer}>
                     <TouchableOpacity
                       style={styles.playerContainer}
                       onPress={() => {
-                        removePlayerToLineup(sides[1].id);
+                        removerJogadorDaEscalacao(laterais[1].id);
                       }}
                     >
                       <Image
                         style={{ width: 55, height: 55 }}
                         source={{
-                          uri: sides[1].image,
+                          uri: laterais[1].imagem,
                         }}
                       ></Image>
-                      <Text style={styles.footballerName}>{sides[1].name}</Text>
+                      <Text style={styles.footballerName}>{laterais[1].nome}</Text>
                     </TouchableOpacity>
                   </View>
                 ) : (
@@ -367,7 +361,7 @@ export default function Lineup({ navigation }) {
                     <TouchableOpacity
                       style={styles.addButton}
                       onPress={() => {
-                        positionDefine("side");
+                        definirPosicao("lateral");
                       }}
                     >
                       <Text style={styles.textAddButton}>+</Text>
@@ -384,22 +378,22 @@ export default function Lineup({ navigation }) {
                   justifyContent: "center",
                 }}
               >
-                {goalkeeper ? (
+                {goleiro ? (
                   <View style={styles.footballer}>
                     <TouchableOpacity
                       style={styles.playerContainer}
                       onPress={() => {
-                        removePlayerToLineup(goalkeeper.id);
+                        removerJogadorDaEscalacao(goleiro.id);
                       }}
                     >
                       <Image
                         style={{ width: 55, height: 55 }}
                         source={{
-                          uri: goalkeeper.image,
+                          uri: goleiro.imagem,
                         }}
                       ></Image>
                       <Text style={styles.footballerName}>
-                        {goalkeeper.name}
+                        {goleiro.nome}
                       </Text>
                     </TouchableOpacity>
                   </View>
@@ -408,7 +402,7 @@ export default function Lineup({ navigation }) {
                     <TouchableOpacity
                       style={styles.addButton}
                       onPress={() => {
-                        positionDefine("goalkeeper");
+                        definirPosicao("goleiro");
                       }}
                     >
                       <Text style={styles.textAddButton}>+</Text>
@@ -417,9 +411,9 @@ export default function Lineup({ navigation }) {
                 )}
               </View>
               <View style={styles.containerButtonDelete}>
-                {lineup.length > 0 ? (
+                {escalacao.length > 0 ? (
                   <View style={styles.buttonDelete}>
-                    <TouchableOpacity onPress={removeAllPlayers}>
+                    <TouchableOpacity onPress={removerTodosOsJogadores}>
                       <Image
                         style={{ width: 25, height: 25 }}
                         source={require("../../../assets/lixeira.png")}
@@ -435,8 +429,8 @@ export default function Lineup({ navigation }) {
         </ViewShot>
         <TouchableOpacity
           onPress={() => {
-            if (lineup.length === 11) {
-              handleAsyncStorage();
+            if (escalacao.length === 11) {
+              salvarEscalacao();
             } else {
               alert(
                 "Para salvar a escalação, você precisa ter 11 jogadores escalados."
@@ -444,7 +438,7 @@ export default function Lineup({ navigation }) {
             }
           }}
           style={
-            lineup.length === 11
+            escalacao.length === 11
               ? styles.saveButtonActive
               : styles.saveButtonDisabled
           }
@@ -452,7 +446,7 @@ export default function Lineup({ navigation }) {
           <Text
             style={{
               fontSize: 20,
-              color: lineup.length === 11 ? "#fff" : "#A9A9A9",
+              color: escalacao.length === 11 ? "#fff" : "#A9A9A9",
             }}
           >
             Salvar
@@ -460,12 +454,12 @@ export default function Lineup({ navigation }) {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            if (lineup.length === 11) {
-              captureAndShareScreenshot();
+            if (escalacao.length === 11) {
+              printarECompartilhar();
             }
           }}
           style={
-            lineup.length === 11
+            escalacao.length === 11
               ? styles.shareButtonActive
               : styles.buttonDisabled
           }
@@ -473,7 +467,7 @@ export default function Lineup({ navigation }) {
           <Text
             style={{
               fontSize: 20,
-              color: lineup.length === 11 ? "#fff" : "#A9A9A9",
+              color: escalacao.length === 11 ? "#fff" : "#A9A9A9",
             }}
           >
             Compartilhar
